@@ -11,19 +11,19 @@ const gameBoard = (() => {
 
 console.log(gameBoard);
 
-// function createPlayers (playerOne, playerTwo){
-//   const players = [
-//     {
-//       playerName: playerOne,
-//       token: "X",
-//     },
-//     {
-//       playerName: playerTwo,
-//       token: "O",
-//     }
-//   ];
+function createPlayers (playerOne, playerTwo){
+  const players = [
+    {
+      playerName: playerOne,
+      token: "X",
+    },
+    {
+      playerName: playerTwo,
+      token: "O",
+    }
+  ];
 
-//   return {players};
-// }
+  return {players};
+}
 
-// console.log(createPlayers("Ifham", "Metal"));
+console.log(createPlayers("Ifham", "Metal"));
