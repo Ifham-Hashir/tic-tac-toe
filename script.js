@@ -1,29 +1,75 @@
-const gameBoard = (() => {
-  const board = [];
-  for (let i = 0; i < 3; i++) {
-    board[i] = [];
-    for (let j = 0; j < 3; j++) {
-      board[i].push(j);
+
+  const gameBoard = () => {
+    const board = [];
+    let k = 1;
+    for (let i = 0; i < 3; i++) {
+      board[i] = [];
+      for (let j = 0; j < 3; j++) {
+        board[i].push(Cell());
+        k++;
+      }
     }
+
+    const printBoard = () => {
+      const boardWithCellValues = board.map((row) => row.map((cell) => cell.getValue()))
+      console.log(boardWithCellValues);
+    };
+    return {printBoard};
+  };
+
+  const createPlayers = function (){
+    const players = [
+      {
+        playerName: "You",
+        token: "X",
+      },
+      {
+        playerName: "Computer",
+        token: "O",
+      }
+    ];
+  
+    return {players};
+  };
+
+  function Cell() {
+    let value = 0;
+  
+    // Accept a player's token to change the value of the cell
+    const addToken = (player) => {
+      value = player;
+    };
+  
+    // How we will retrieve the current value of this cell through closure
+    const getValue = () => value;
+  
+    return {
+      addToken,
+      getValue
+    };
   }
-  return {board};
-}) ();
 
-console.log(gameBoard);
 
-function createPlayers (playerOne, playerTwo){
+function gameController ( playerOneName = "PlayerX", playerTwoName = "PlayerO") {
+  const board = gameBoard();
+
   const players = [
     {
-      playerName: playerOne,
-      token: "X",
+      name: playerOneName,
+      token: "X"
     },
     {
-      playerName: playerTwo,
-      token: "O",
+      name: playerTwoName,
+      token: "O"
     }
   ];
 
-  return {players};
+  const printNewRound = () => {
+    board.printBoard();
+    // console.log(`${getActivePlayer().name}'s turn.`);
+  };
+
+  printNewRound();
 }
 
-console.log(createPlayers("Ifham", "Metal"));
+const game = gameController();
