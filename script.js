@@ -1,75 +1,72 @@
 
-  const gameBoard = () => {
+  const gameBoard = (() => {
     const board = [];
-    let k = 1;
     for (let i = 0; i < 3; i++) {
       board[i] = [];
       for (let j = 0; j < 3; j++) {
-        board[i].push(Cell());
-        k++;
+        board[i].push(0);
       }
     }
 
-    const printBoard = () => {
-      const boardWithCellValues = board.map((row) => row.map((cell) => cell.getValue()))
-      console.log(boardWithCellValues);
-    };
-    return {printBoard};
-  };
-
-  const createPlayers = function (){
-    const players = [
-      {
-        playerName: "You",
-        token: "X",
-      },
-      {
-        playerName: "Computer",
-        token: "O",
+    const dropToken = (row, col, player) => {
+      if(board[row][col] === 0){
+        board[row][col] = player;
       }
-    ];
-  
-    return {players};
-  };
+      else {
+        return;
+      }
+    }
 
-  function Cell() {
-    let value = 0;
-  
-    // Accept a player's token to change the value of the cell
-    const addToken = (player) => {
-      value = player;
-    };
-  
-    // How we will retrieve the current value of this cell through closure
-    const getValue = () => value;
-  
     return {
-      addToken,
-      getValue
-    };
-  }
+      board,
+      dropToken,
+    }
+  }) ();
 
 
-function gameController ( playerOneName = "PlayerX", playerTwoName = "PlayerO") {
-  const board = gameBoard();
+
+function gameController() {
+  const board = gameBoard.board;
 
   const players = [
     {
-      name: playerOneName,
-      token: "X"
+      name: "PlayerX",
+      token: "X",
     },
     {
-      name: playerTwoName,
-      token: "O"
+      name: "PlayerO",
+      token: "O",
     }
   ];
+  
+  let activePlayer = players[0];
+
+  const switchPlayerTurn = () => {
+    activePlayer = activePlayer === players[0] ? players[1] : players[0];
+  };
+  const getActivePlayer = () => activePlayer;
 
   const printNewRound = () => {
-    board.printBoard();
-    // console.log(`${getActivePlayer().name}'s turn.`);
+    console.log(board);
+    console.log(`${getActivePlayer().name}'s turn.`);
+  };
+
+  const playRound = (row = prompt("Enter row:"), col = prompt("Enter col:")) => {
+    console.log(`Dropping ${getActivePlayer().name}'s token...`);
+    gameBoard.dropToken(row,col, getActivePlayer().token);
+
+    switchPlayerTurn();
+    printNewRound();
   };
 
   printNewRound();
+  playRound();
+  for(let i = 0; i < 3; i++){
+    for(let j = 0; j < 3; j++){
+      if(board[i][j] === 0)
+        playRound();
+    }
+  }
 }
 
-const game = gameController();
+gameController();
