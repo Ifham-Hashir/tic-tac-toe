@@ -1,16 +1,15 @@
 
   const gameBoard = (() => {
     const board = [];
-    for (let i = 0; i < 3; i++) {
-      board[i] = [];
-      for (let j = 0; j < 3; j++) {
-        board[i].push(0);
-      }
+    for (let i = 1; i <= 9; i++) {
+      board.push(i);
     }
 
-    const dropToken = (row, col, player) => {
-      if(board[row][col] === 0){
-        board[row][col] = player;
+    const winningCombos = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [1, 4, 7], [2, 5, 8], [3, 6, 9], [1, 5, 9], [7, 5, 3]];
+
+    const dropToken = (cell, player) => {
+      if(board[cell - 1] !== 'X' || board[cell - 1] !== 'O'){
+        board[cell - 1] = player;
       }
       else {
         return;
@@ -47,26 +46,30 @@ function gameController() {
   const getActivePlayer = () => activePlayer;
 
   const printNewRound = () => {
-    console.log(board);
+    console.log(board[0] + " " + board[1] + " " + board[2]);
+    console.log(board[3] + " " + board[4] + " " + board[5]);
+    console.log(board[6] + " " + board[7] + " " + board[8]);
     console.log(`${getActivePlayer().name}'s turn.`);
   };
 
-  const playRound = (row = prompt("Enter row:"), col = prompt("Enter col:")) => {
-    console.log(`Dropping ${getActivePlayer().name}'s token...`);
-    gameBoard.dropToken(row,col, getActivePlayer().token);
-
-    switchPlayerTurn();
-    printNewRound();
+  const playRound = (cell = prompt("Enter Cell:")) => {
+    if(cell > 0 && cell < 10){
+      console.log(`Dropping ${getActivePlayer().name}'s token...`);
+      gameBoard.dropToken(cell, getActivePlayer().token);
+      switchPlayerTurn();
+      printNewRound();
+    }else {
+      playRound();
+    }
   };
 
   printNewRound();
   playRound();
-  for(let i = 0; i < 3; i++){
-    for(let j = 0; j < 3; j++){
-      if(board[i][j] === 0)
-        playRound();
-    }
+
+  return {
+    playRound,
   }
 }
+
 
 gameController();
