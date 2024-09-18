@@ -70,21 +70,22 @@ function gameController() {
     }
   }
 
-printNewRound();
-while(true) {
-  if(gameBoard.checkForWin() === false){
-    playRound();
+  const game = (() => {
+    printNewRound();
+    while(true) {
+      if(gameBoard.checkForWin() === false){
+        playRound();
 
-  }else if(gameBoard.checkForWin() === true) {
-    switchPlayerTurn();
-    console.log(`${getActivePlayer().name} Won`)
-    break;
-  }
-  
-}
+      }else if(gameBoard.checkForWin() === true) {
+        switchPlayerTurn();
+        console.log(`${getActivePlayer().name} Won`)
+        break;
+      }
+    }
+  }) ();
 
   return {
-    playRound,
+    game,
   }
 };
 
