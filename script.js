@@ -17,6 +17,17 @@
       return isWon;
     }
 
+    const checkForTie = () => {
+      let isTie = false;
+      if(board[0] !== 1 && board[1] !== 2 && board[2] !== 3 &&
+        board[3] !== 4 && board[4] !== 5 && board[5] !== 6 &&
+        board[6] !== 7 && board[7] !== 8 && board[8] !== 9){
+
+          isTie = true;
+      }
+      return isTie;
+    }
+
     const dropToken = (cell, player) => {
       board[cell - 1] = player;
     }
@@ -25,6 +36,7 @@
       board,
       dropToken,
       checkForWin,
+      checkForTie,
     }
   }) ();
 
@@ -59,12 +71,12 @@ function gameController() {
 
   const playRound = (cell = prompt("Enter Cell:")) => {
     if(cell > 0 && cell < 10 && board[cell - 1] !== 'X' && board[cell - 1] !== 'O'){
-      console.log(`${getActivePlayer().name}'s turn.`);
       console.log(`Dropping ${getActivePlayer().name}'s token...`);
       gameBoard.dropToken(cell, getActivePlayer().token);
       switchPlayerTurn();
       printNewRound();
       gameBoard.checkForWin();
+      gameBoard.checkForTie();
     }else {
         playRound();
     }
@@ -73,13 +85,19 @@ function gameController() {
   const game = (() => {
     printNewRound();
     while(true) {
-      if(gameBoard.checkForWin() === false){
-        playRound();
-
-      }else if(gameBoard.checkForWin() === true) {
+      if(gameBoard.checkForWin() === true) {
         switchPlayerTurn();
         console.log(`${getActivePlayer().name} Won`)
         break;
+      } 
+      else if(gameBoard.checkForTie() === true){
+        switchPlayerTurn();
+        console.log("It's a tie");
+        break;
+      }
+      else if(gameBoard.checkForWin() === false){
+        console.log(`${getActivePlayer().name}'s turn.`);
+        playRound();
       }
     }
   }) ();
