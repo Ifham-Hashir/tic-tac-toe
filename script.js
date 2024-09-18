@@ -5,20 +5,26 @@
       board.push(i);
     }
 
-    const winningCombos = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [1, 4, 7], [2, 5, 8], [3, 6, 9], [1, 5, 9], [7, 5, 3]];
+    const checkForWin = () => {
+      let isWon = false;
+      const winningCombos = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [6, 4, 2]];
+      for(let i = 0; i < winningCombos.length; i++){
+        const [a,b,c] = winningCombos[i];
+        if(board[a] === board[b] && board[a] === board[c]){
+          isWon = true;
+        }
+      }
+      return isWon;
+    }
 
     const dropToken = (cell, player) => {
-      if(board[cell - 1] !== 'X' || board[cell - 1] !== 'O'){
-        board[cell - 1] = player;
-      }
-      else {
-        return;
-      }
+      board[cell - 1] = player;
     }
 
     return {
       board,
       dropToken,
+      checkForWin,
     }
   }) ();
 
@@ -49,27 +55,38 @@ function gameController() {
     console.log(board[0] + " " + board[1] + " " + board[2]);
     console.log(board[3] + " " + board[4] + " " + board[5]);
     console.log(board[6] + " " + board[7] + " " + board[8]);
-    console.log(`${getActivePlayer().name}'s turn.`);
   };
 
   const playRound = (cell = prompt("Enter Cell:")) => {
-    if(cell > 0 && cell < 10){
+    if(cell > 0 && cell < 10 && board[cell - 1] !== 'X' && board[cell - 1] !== 'O'){
+      console.log(`${getActivePlayer().name}'s turn.`);
       console.log(`Dropping ${getActivePlayer().name}'s token...`);
       gameBoard.dropToken(cell, getActivePlayer().token);
       switchPlayerTurn();
       printNewRound();
+      gameBoard.checkForWin();
     }else {
-      playRound();
+        playRound();
     }
-  };
+  }
 
-  printNewRound();
-  playRound();
+printNewRound();
+while(true) {
+  if(gameBoard.checkForWin() === false){
+    playRound();
+
+  }else if(gameBoard.checkForWin() === true) {
+    switchPlayerTurn();
+    console.log(`${getActivePlayer().name} Won`)
+    break;
+  }
+  
+}
 
   return {
     playRound,
   }
-}
+};
 
 
 gameController();
