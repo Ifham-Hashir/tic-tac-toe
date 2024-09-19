@@ -73,39 +73,32 @@ function gameController() {
     if(cell > 0 && cell < 10 && board[cell - 1] !== 'X' && board[cell - 1] !== 'O'){
       console.log(`Dropping ${getActivePlayer().name}'s token...`);
       gameBoard.dropToken(cell, getActivePlayer().token);
-      switchPlayerTurn();
-      printNewRound();
-      gameBoard.checkForWin();
-      gameBoard.checkForTie();
+      if(gameBoard.checkForWin() === true) {
+        printNewRound();
+        console.log(`${getActivePlayer().name} Won`);
+      }
+      else if(gameBoard.checkForTie() === true){
+        printNewRound();
+        console.log("It's a tie");
+      }
+      else{
+        switchPlayerTurn();
+        printNewRound();
+        console.log(`${getActivePlayer().name}'s turn.`);
+        playRound();
+      } 
     }else {
         playRound();
     }
   }
-
-  const game = (() => {
-    printNewRound();
-    while(true) {
-      if(gameBoard.checkForWin() === true) {
-        switchPlayerTurn();
-        console.log(`${getActivePlayer().name} Won`)
-        break;
-      } 
-      else if(gameBoard.checkForTie() === true){
-        switchPlayerTurn();
-        console.log("It's a tie");
-        break;
-      }
-      else if(gameBoard.checkForWin() === false){
-        console.log(`${getActivePlayer().name}'s turn.`);
-        playRound();
-      }
-    }
-  }) ();
+  console.log(`${getActivePlayer().name}'s turn.`);
+  printNewRound();
+  playRound();
 
   return {
-    game,
+    playRound,
+    getActivePlayer,
   }
 };
-
 
 gameController();
