@@ -138,6 +138,12 @@ function screenController() {
       return;
     }
   }
+  const restartBtn = document.querySelector(".restart");
+  restartBtn.addEventListener("click", () => {
+    location.reload();
+  });
+
+
   boardDiv.addEventListener("click", clickHandlerBoard);
 
   // Initial render
