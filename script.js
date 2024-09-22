@@ -63,11 +63,11 @@ function gameController() {
   };
   const getActivePlayer = () => activePlayer;
 
-  const printNewRound = () => {
-    console.log(board[0] + " " + board[1] + " " + board[2]);
-    console.log(board[3] + " " + board[4] + " " + board[5]);
-    console.log(board[6] + " " + board[7] + " " + board[8]);
-  };
+  // const printNewRound = () => {
+  //   console.log(board[0] + " " + board[1] + " " + board[2]);
+  //   console.log(board[3] + " " + board[4] + " " + board[5]);
+  //   console.log(board[6] + " " + board[7] + " " + board[8]);
+  // };
 
   const playRound = (cell) => {
     //console.log(`Dropping ${getActivePlayer().name}'s token...`);
@@ -107,7 +107,7 @@ function screenController() {
         // Anything clickable should be a button!!
         const cellButton = document.createElement("button");
         cellButton.classList.add("cell");
-        // Create a data attribute to identify the column
+        // Create a data attribute to identify the cell
         // This makes it easier to pass into our `playRound` function 
         cellButton.dataset.cell = index;
         cellButton.textContent = cell;
@@ -118,11 +118,11 @@ function screenController() {
 
   // Add event listener for the board
   function clickHandlerBoard(e) {
-    if(e.target.textContent !== ""){
+    if(e.target.textContent !== "" || gameBoard.checkForWin() === true || gameBoard.checkForTie() === true){
       return;
     }
     const selectedCell = e.target.dataset.cell;
-    // Make sure I've clicked a column and not the gaps in between
+    // Make sure I've clicked a cell and not the gaps in between
     //if (!selectedCell) return;
     game.playRound(selectedCell);
     updateScreen();
