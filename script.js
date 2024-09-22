@@ -73,7 +73,7 @@ function gameController() {
     //console.log(`Dropping ${getActivePlayer().name}'s token...`);
     gameBoard.dropToken(cell, getActivePlayer().token);
     switchPlayerTurn();
-    printNewRound();
+    //printNewRound();
   }
 
 
@@ -81,6 +81,7 @@ function gameController() {
   return {
     playRound,
     getActivePlayer,
+    switchPlayerTurn,
   }
 };
 
@@ -119,9 +120,20 @@ function screenController() {
   function clickHandlerBoard(e) {
     const selectedCell = e.target.dataset.cell;
     // Make sure I've clicked a column and not the gaps in between
-    if (!selectedCell) return;
+    //if (!selectedCell) return;
     game.playRound(selectedCell);
     updateScreen();
+    if(gameBoard.checkForWin() === true){
+      game.switchPlayerTurn();
+      const activePlayer = game.getActivePlayer();
+      playerTurnDiv.textContent = `${activePlayer.name} Won!!!`;
+      return;
+    }
+
+    if(gameBoard.checkForTie() === true){
+      playerTurnDiv.textContent = `Tie`;
+      return;
+    }
   }
   boardDiv.addEventListener("click", clickHandlerBoard);
 
