@@ -118,6 +118,9 @@ function screenController() {
 
   // Add event listener for the board
   function clickHandlerBoard(e) {
+    if(e.target.textContent !== ""){
+      return;
+    }
     const selectedCell = e.target.dataset.cell;
     // Make sure I've clicked a column and not the gaps in between
     //if (!selectedCell) return;
