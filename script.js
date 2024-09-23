@@ -47,11 +47,11 @@ function gameController() {
 
   const players = [
     {
-      name: "PlayerX",
+      name: "Player X",
       token: "X",
     },
     {
-      name: "PlayerO",
+      name: "Player O",
       token: "O",
     }
   ];
