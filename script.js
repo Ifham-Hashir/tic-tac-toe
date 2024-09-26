@@ -5,6 +5,8 @@
       board.push("");
     }
 
+    const getBoard = () => board;
+
     const checkForWin = () => {
       let isWon = false;
       const winningCombos = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [6, 4, 2]];
@@ -33,7 +35,7 @@
     }
 
     return {
-      board,
+      getBoard,
       dropToken,
       checkForWin,
       checkForTie,
@@ -43,7 +45,6 @@
 
 
 function gameController() {
-  const board = gameBoard.board;
 
   const players = [
     {
@@ -63,17 +64,9 @@ function gameController() {
   };
   const getActivePlayer = () => activePlayer;
 
-  // const printNewRound = () => {
-  //   console.log(board[0] + " " + board[1] + " " + board[2]);
-  //   console.log(board[3] + " " + board[4] + " " + board[5]);
-  //   console.log(board[6] + " " + board[7] + " " + board[8]);
-  // };
-
   const playRound = (cell) => {
-    //console.log(`Dropping ${getActivePlayer().name}'s token...`);
     gameBoard.dropToken(cell, getActivePlayer().token);
     switchPlayerTurn();
-    //printNewRound();
   }
 
 
@@ -95,7 +88,7 @@ function screenController() {
     boardDiv.textContent = "";
 
     //get the newest version of the board and player turn
-    const board = gameBoard.board;
+    const board = gameBoard.getBoard();
     const activePlayer = game.getActivePlayer();
 
     // Display player's turn
